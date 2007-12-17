@@ -12,7 +12,6 @@ Group:		Video
 License:	GPL
 URL:		http://www.e-tobi.net/blog/pages/vdr-podcatcher
 Source:		http://www.e-tobi.net/blog/files/vdr-%plugin-%version.tar.bz2
-BuildRoot:	%{_tmppath}/%{name}-buildroot
 BuildRequires:	vdr-devel >= 1.4.1-6
 BuildRequires:	libcurl-devel
 BuildRequires:	libmad-devel
