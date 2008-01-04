@@ -2,7 +2,7 @@
 %define plugin	podcatcher
 %define name	vdr-plugin-%plugin
 %define version	0.1.1
-%define rel	11
+%define rel	12
 
 Summary:	VDR plugin: subscribe to podcasts
 Name:		%name
