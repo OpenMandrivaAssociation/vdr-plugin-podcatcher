@@ -13,6 +13,8 @@ License:	GPL
 URL:		http://www.e-tobi.net/blog/pages/vdr-podcatcher
 Source:		http://www.e-tobi.net/blog/files/vdr-%plugin-%version.tar.bz2
 Patch0:		podcatcher-0.1.1-i18n-1.6.patch
+Patch1:		podcatcher-includes.patch
+Patch2:		podcatcher-format-string.patch
 BuildRoot:	%{_tmppath}/%{name}-buildroot
 BuildRequires:	vdr-devel >= 1.6.0
 BuildRequires:	libcurl-devel
@@ -27,6 +29,8 @@ to browse through the podcasts, download and play them.
 %prep
 %setup -q -n %plugin-%version
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 %vdr_plugin_prep
 
 %vdr_plugin_params_begin %plugin
