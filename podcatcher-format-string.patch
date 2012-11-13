@@ -1,0 +1,11 @@
+Index: podcatcher-0.1.1/src/syslogerrorlogger.cc
+===================================================================
+--- podcatcher-0.1.1/src/syslogerrorlogger.cc
++++ podcatcher-0.1.1/src/syslogerrorlogger.cc	2009-03-21 12:06:23.000000000 +0200
+@@ -25,5 +25,5 @@
+ 
+ void SyslogErrorLogger::Log(std::string Message)
+ {
+-    esyslog(("ERROR (vdr-podcatcher): " + Message).c_str());
++    esyslog("%s", ("ERROR (vdr-podcatcher): " + Message).c_str());
+ }

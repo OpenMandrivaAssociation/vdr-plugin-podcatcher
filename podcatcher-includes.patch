@@ -1,0 +1,62 @@
+Index: podcatcher-0.1.1/src/mp3decoder.cc
+===================================================================
+--- podcatcher-0.1.1/src/mp3decoder.cc
++++ podcatcher-0.1.1/src/mp3decoder.cc	2009-07-27 20:18:28.212094616 +0300
+@@ -20,6 +20,7 @@
+  *
+  */
+ 
++#include <cstring>
+ #include "mp3decoder.h"
+ #include "pesaudiopacket.h"
+ 
+Index: podcatcher-0.1.1/src/pesaudiopacket.cc
+===================================================================
+--- podcatcher-0.1.1/src/pesaudiopacket.cc
++++ podcatcher-0.1.1/src/pesaudiopacket.cc	2009-07-27 20:18:28.400846110 +0300
+@@ -22,6 +22,8 @@
+ 
+ #include "pesaudiopacket.h"
+ #include <memory>
++#include <cstdlib>
++#include <cstring>
+ 
+ using namespace std;
+ 
+Index: podcatcher-0.1.1/src/playbackcontroller.cc
+===================================================================
+--- podcatcher-0.1.1/src/playbackcontroller.cc
++++ podcatcher-0.1.1/src/playbackcontroller.cc	2009-07-27 20:18:49.224093595 +0300
+@@ -20,6 +20,7 @@
+  *
+  */
+ 
++#include <cstdio>
+ #include "playbackcontroller.h"
+ #include "pespacketbuffer.h"
+ #include "thread.h"
+Index: podcatcher-0.1.1/src/rfc822datetime.cc
+===================================================================
+--- podcatcher-0.1.1/src/rfc822datetime.cc
++++ podcatcher-0.1.1/src/rfc822datetime.cc	2009-07-27 20:19:24.560094298 +0300
+@@ -20,6 +20,8 @@
+  *
+  */
+ 
++#include <cstdlib>
++#include <cstdio>
+ #include "rfc822datetime.h"
+ 
+ using namespace std;
+Index: podcatcher-0.1.1/src/rssfeedparser.cc
+===================================================================
+--- podcatcher-0.1.1/src/rssfeedparser.cc
++++ podcatcher-0.1.1/src/rssfeedparser.cc	2009-07-27 20:18:28.413092927 +0300
+@@ -20,6 +20,7 @@
+  *
+  */
+ 
++#include <cstring>
+ #include <libxml/encoding.h>
+ #include "rssfeedparser.h"
+ #include "htmltotext.h"

@@ -1,0 +1,465 @@
+
+This is a semi-automatically created i18n adaptation patch and may contain
+errors (such as missing translations). This should only be used as a
+temporary measure until the upstream plugin maintainer fixes the plugin
+properly according to the instructions in i18n-to-gettext.pl.
+
+Created for Mandriva Linux packaging by Anssi Hannula <anssi@mandriva.org>.
+
+
+Index: podcatcher-0.1.1-r/Makefile
+===================================================================
+--- podcatcher-0.1.1-r/Makefile
++++ podcatcher-0.1.1-r/Makefile	2008-04-24 22:34:08.000000000 +0300
+@@ -108,9 +108,34 @@
+     -include $(BUILD_DEPFILE)
+ endif
+ 
++### Internationalization (I18N):
++
++PODIR     = po
++LOCALEDIR = $(VDRDIR)/locale
++I18Npo    = $(wildcard $(PODIR)/*.po)
++I18Nmsgs  = $(addprefix $(LOCALEDIR)/, $(addsuffix /LC_MESSAGES/vdr-$(PLUGIN).mo, $(notdir $(foreach file, $(I18Npo), $(basename $(file))))))
++I18Npot   = $(PODIR)/$(PLUGIN).pot
++
++%.mo: %.po
++	msgfmt -c -o $@ $<
++
++$(I18Npot): $(wildcard */*.[ch]* *.[ch] *.[ch]xx *.cc *.[ch]pp *.hh)
++	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --msgid-bugs-address='<http://qa.mandriva.com/>' -o $@ $^
++
++%.po: $(I18Npot)
++	msgmerge -U --no-wrap --no-location --backup=none -q $@ $<
++	@touch $@
++
++$(I18Nmsgs): $(LOCALEDIR)/%/LC_MESSAGES/vdr-$(PLUGIN).mo: $(PODIR)/%.mo
++	@mkdir -p $(dir $@)
++	cp $< $@
++
++.PHONY: i18n
++i18n: $(I18Nmsgs)
++
+ ### Targets:
+ 
+-all: libvdr-$(PLUGIN).so
++all: libvdr-$(PLUGIN).so i18n
+ 
+ testrunner.cc:
+ 	./cxxtestgen.py -o testrunner.cc --error-printer --root
+@@ -136,6 +161,7 @@
+ 	@echo Distribution package created as $(PACKAGE).tar.gz
+ 
+ clean:
++	@-rm -f $(PODIR)/*.mo $(PODIR)/*.pot
+ 	@-rm -f $(BUILD_DEPFILE) $(TESTS_DEPFILE) *.so* *.tar.gz core* *~
+ 	@-find . -name \*.\o -exec rm -f {} \; 
+ 	@-rm -f testrunner testrunner.cc src/*_test.cxx.cc
+Index: podcatcher-0.1.1-r/sources.mk
+===================================================================
+--- podcatcher-0.1.1-r/sources.mk
++++ podcatcher-0.1.1-r/sources.mk	2008-04-24 22:27:28.000000000 +0300
+@@ -25,7 +25,6 @@
+   src/feedsconfigfile.cc \
+   src/feedupdaterimpl.cc \
+   src/htmltotext.cc \
+-  src/i18n.cc \
+   src/item.cc \
+   src/itembuttonsupdater.cc \
+   src/itemmenupresenter.cc \
+Index: podcatcher-0.1.1-r/src/i18n.cc
+===================================================================
+--- podcatcher-0.1.1-r/src/i18n.cc
++++ podcatcher-0.1.1-r/src/i18n.cc	2008-04-24 22:28:16.000000000 +0300
+@@ -1,183 +0,0 @@
+-/*
+- * vdr-podcatcher - A plugin for the Linux Video Disk Recorder
+- * Copyright (c) 2006 Tobias Grimm <vdr@e-tobi.net>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+- *
+- * $Id: i18n.cc 2656 2006-02-01 22:29:31Z svntobi $
+- *
+- */
+-
+-#include "i18n.h"
+-
+-const tI18nPhrase Phrases[] =
+-{
+-    {
+-        "Podcatcher",
+-        "Podcatcher",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "Podcast-lähetykset",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-    },
+-    {
+-        "Download and play podcasts",
+-        "Podcasts laden und abspielen",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "Toistaa podcast-lähetyksiä",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-    },
+-    {
+-        "Update",
+-        "Aktualisieren",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "Päivitä",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-    },
+-    {
+-        "Select Feed",
+-        "Feed auswählen",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "Valitse Podcast-lähetys",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-    },
+-    {
+-        "Play",
+-        "Wiedergabe",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "Soita",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-    },
+-    {
+-        "Download",
+-        "Download",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "Lataa",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-    },
+-    {
+-        "all",
+-        "alle",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "kaikki",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-    },
+-    {
+-        "MP3 only",
+-        "nur MP3",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "vain MP3",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-    },
+-    {
+-        ">queued<",
+-        ">wartend<",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        ">jonossa<",
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-        "",// TODO
+-    },
+-    {
+-        NULL
+-    }
+-};
+Index: podcatcher-0.1.1-r/src/i18n.h
+===================================================================
+--- podcatcher-0.1.1-r/src/i18n.h
++++ podcatcher-0.1.1-r/src/i18n.h	2008-04-24 22:28:07.000000000 +0300
+@@ -25,6 +25,4 @@
+ 
+ #include <vdr/i18n.h>
+ 
+-extern const tI18nPhrase Phrases[];
+-
+ #endif
+Index: podcatcher-0.1.1-r/src/podcatcherplugin.cc
+===================================================================
+--- podcatcher-0.1.1-r/src/podcatcherplugin.cc
++++ podcatcher-0.1.1-r/src/podcatcherplugin.cc	2008-04-24 22:31:21.000000000 +0300
+@@ -59,8 +59,6 @@
+ 
+ bool PodcatcherPlugin::Initialize(void)
+ {
+-    RegisterI18n(Phrases);
+-
+     const char* configDir = ConfigDirectory();
+ 
+     if (configDir)
+Index: podcatcher-0.1.1-r/po/de_DE.po
+===================================================================
+--- podcatcher-0.1.1-r/po/de_DE.po
++++ podcatcher-0.1.1-r/po/de_DE.po	2008-04-24 22:37:56.000000000 +0300
+@@ -0,0 +1,56 @@
++# VDR podcatcher plugin language source file.
++# Copyright (C) YEAR THE VDR-podcatcher'S COPYRIGHT HOLDER
++# This file is distributed under the same license as the VDR-podcatcher package.
++# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: VDR-podcatcher\n"
++"Report-Msgid-Bugs-To: http://qa.mandriva.com/\n"
++"POT-Creation-Date: 2008-04-24 22:37+0300\n"
++"PO-Revision-Date: 2008-04-24 22:37+0300\n"
++"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
++"Language-Team: <vdr@linuxtv.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=ISO-8859-15\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: src/feedmenupresenter.cc:39
++msgid "Select Feed"
++msgstr "Feed auswählen"
++
++#: src/feedmenupresenter.cc:40
++msgid "Update"
++msgstr "Aktualisieren"
++
++#: src/itembuttonsupdater.cc:53
++msgid "Play"
++msgstr "Wiedergabe"
++
++#: src/itembuttonsupdater.cc:80
++msgid ">queued<"
++msgstr ">wartend<"
++
++#: src/itembuttonsupdater.cc:85
++msgid "Download"
++msgstr "Download"
++
++#: src/itemmenupresenter.cc:174
++msgid "all"
++msgstr "alle"
++
++#: src/itemmenupresenter.cc:178
++msgid "MP3 only"
++msgstr "nur MP3"
++
++#: src/osdsetupmenu.cc:30
++msgid "Max. download cache age (days)"
++msgstr ""
++
++#: src/podcatcherplugin.cc:52
++msgid "Download and play podcasts"
++msgstr "Podcasts laden und abspielen"
++
++#: src/podcatcherplugin.cc:57
++msgid "Podcatcher"
++msgstr "Podcatcher"
+Index: podcatcher-0.1.1-r/po/fi_FI.po
+===================================================================
+--- podcatcher-0.1.1-r/po/fi_FI.po
++++ podcatcher-0.1.1-r/po/fi_FI.po	2008-04-24 22:37:56.000000000 +0300
+@@ -0,0 +1,56 @@
++# VDR podcatcher plugin language source file.
++# Copyright (C) YEAR THE VDR-podcatcher'S COPYRIGHT HOLDER
++# This file is distributed under the same license as the VDR-podcatcher package.
++# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: VDR-podcatcher\n"
++"Report-Msgid-Bugs-To: http://qa.mandriva.com/\n"
++"POT-Creation-Date: 2008-04-24 22:37+0300\n"
++"PO-Revision-Date: 2008-04-24 22:37+0300\n"
++"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
++"Language-Team: <vdr@linuxtv.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=ISO-8859-15\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: src/feedmenupresenter.cc:39
++msgid "Select Feed"
++msgstr "Valitse Podcast-lähetys"
++
++#: src/feedmenupresenter.cc:40
++msgid "Update"
++msgstr "Päivitä"
++
++#: src/itembuttonsupdater.cc:53
++msgid "Play"
++msgstr "Soita"
++
++#: src/itembuttonsupdater.cc:80
++msgid ">queued<"
++msgstr ">jonossa<"
++
++#: src/itembuttonsupdater.cc:85
++msgid "Download"
++msgstr "Lataa"
++
++#: src/itemmenupresenter.cc:174
++msgid "all"
++msgstr "kaikki"
++
++#: src/itemmenupresenter.cc:178
++msgid "MP3 only"
++msgstr "vain MP3"
++
++#: src/osdsetupmenu.cc:30
++msgid "Max. download cache age (days)"
++msgstr ""
++
++#: src/podcatcherplugin.cc:52
++msgid "Download and play podcasts"
++msgstr "Toistaa podcast-lähetyksiä"
++
++#: src/podcatcherplugin.cc:57
++msgid "Podcatcher"
++msgstr "Podcast-lähetykset"
+Index: podcatcher-0.1.1-r/po/podcatcher.pot
+===================================================================
+--- podcatcher-0.1.1-r/po/podcatcher.pot
++++ podcatcher-0.1.1-r/po/podcatcher.pot	2008-04-24 22:25:49.000000000 +0300
+@@ -0,0 +1,57 @@
++# SOME DESCRIPTIVE TITLE.
++# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
++# This file is distributed under the same license as the PACKAGE package.
++# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
++#
++#, fuzzy
++msgid ""
++msgstr ""
++"Project-Id-Version: PACKAGE VERSION\n"
++"Report-Msgid-Bugs-To: http://qa.mandriva.com/\n"
++"POT-Creation-Date: 2008-04-24 22:25+0300\n"
++"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
++"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
++"Language-Team: LANGUAGE <LL@li.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=CHARSET\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: src/feedmenupresenter.cc:39
++msgid "Select Feed"
++msgstr ""
++
++#: src/feedmenupresenter.cc:40
++msgid "Update"
++msgstr ""
++
++#: src/itembuttonsupdater.cc:53
++msgid "Play"
++msgstr ""
++
++#: src/itembuttonsupdater.cc:80
++msgid ">queued<"
++msgstr ""
++
++#: src/itembuttonsupdater.cc:85
++msgid "Download"
++msgstr ""
++
++#: src/itemmenupresenter.cc:174
++msgid "all"
++msgstr ""
++
++#: src/itemmenupresenter.cc:178
++msgid "MP3 only"
++msgstr ""
++
++#: src/osdsetupmenu.cc:30
++msgid "Max. download cache age (days)"
++msgstr ""
++
++#: src/podcatcherplugin.cc:52
++msgid "Download and play podcasts"
++msgstr ""
++
++#: src/podcatcherplugin.cc:57
++msgid "Podcatcher"
++msgstr ""
