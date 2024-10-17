@@ -10,7 +10,7 @@ Version:	%version
 Release:	%mkrel %rel
 Group:		Video
 License:	GPL
-URL:		http://www.e-tobi.net/blog/pages/vdr-podcatcher
+URL:		https://www.e-tobi.net/blog/pages/vdr-podcatcher
 Source:		http://www.e-tobi.net/blog/files/vdr-%plugin-%version.tar.bz2
 Patch0:		podcatcher-0.1.1-i18n-1.6.patch
 Patch1:		podcatcher-includes.patch
