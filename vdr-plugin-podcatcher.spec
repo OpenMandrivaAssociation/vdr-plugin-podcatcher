@@ -7,7 +7,7 @@
 Summary:	VDR plugin: subscribe to podcasts
 Name:		%name
 Version:	%version
-Release:	%mkrel %rel
+Release:	%rel.1
 Group:		Video
 License:	GPL
 URL:		https://www.e-tobi.net/blog/pages/vdr-podcatcher
